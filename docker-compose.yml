@@ -1,16 +1,16 @@
 version: '3.9'
+
 services:
   app:
     build:
       context: .
       args:
-        - PORT=${PORT}
+        - PORT
     command: sh -c "npx prisma db push && yarn start:prod"
     ports:
       - '${PORT}:4000'
     environment:
       - PORT=${PORT}
-      - DATABASE_URL=${DATABASE_URL}
     depends_on:
       - postgres
 
@@ -19,13 +19,13 @@ services:
     container_name: postgres
     restart: always
     environment:
-      POSTGRES_DB: mydb
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
-      - '5432:5432'
+      - '${DB_PORT}:5432'
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pgdata1:/var/lib/postgresql/data
 
 volumes:
-  pgdata:
+  pgdata1:
