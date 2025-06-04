@@ -1,4 +1,4 @@
-FROM node:22-alpine
+FROM node:22-slim
 ARG PORT=4000
 ENV PORT=$PORT
 WORKDIR /app
