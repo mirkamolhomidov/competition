@@ -1,11 +1,31 @@
-name: compose1
+version: '3.9'
 services:
-  nest_app:
+  app:
     build:
       context: .
       args:
-        - PORT:${PORT}
+        - PORT=${PORT}
     command: sh -c "npx prisma db push && yarn start:prod"
-    ports: -'3000:4000'
+    ports:
+      - '${PORT}:4000'
     environment:
       - PORT=${PORT}
+      - DATABASE_URL=${DATABASE_URL}
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
