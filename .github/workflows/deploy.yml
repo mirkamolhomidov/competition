@@ -28,8 +28,7 @@ jobs:
           DB_PORT: ${{ secrets.DB_PORT }}
         run: |
           ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} <<EOF
-            cd /home/${{ secrets.SERVER_USER }}/apps/${{ github.repository }}
-            
+            cd /home/${{ secrets.SERVER_USER }}/apps/competition1
             git pull origin main
             
             export PORT=$PORT
