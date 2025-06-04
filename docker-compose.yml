@@ -1,0 +1,11 @@
+name: compose1
+services:
+  nest_app:
+    build:
+      context: .
+      args:
+        - PORT:${PORT}
+    command: sh -c "npx prisma db push && yarn start:prod"
+    ports: -'3000:4000'
+    environment:
+      - PORT=${PORT}
