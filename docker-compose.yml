@@ -1,12 +1,10 @@
-version: '3.9'
-
 services:
   app:
     build:
       context: .
       args:
         - PORT
-    command: sh -c "npx prisma db push && yarn start:prod"
+    command: sh -c "yarn start:prod"
     ports:
       - '${PORT}:4000'
     environment:
