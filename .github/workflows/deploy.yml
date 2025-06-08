@@ -19,13 +19,13 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
 
-          - name: Deploy to Server via SSH
-            run: |
-              ssh -T ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} <<'EOF'
-                cd /home/${{ secrets.SERVER_USER }}/apps/competition1
-                git pull origin main
+      - name: Deploy to Server via SSH
+        run: |
+          ssh -T ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} <<'EOF'
+            cd /home/${{ secrets.SERVER_USER }}/apps/competition1
+            git pull origin main
 
-                cat <<EOT > secrets.env
+            cat <<EOT > secrets.env
           PORT=${{ secrets.PORT }}
           POSTGRES_DB=${{ secrets.POSTGRES_DB }}
           POSTGRES_USER=${{ secrets.POSTGRES_USER }}
@@ -33,7 +33,7 @@ jobs:
           DB_PORT=${{ secrets.DB_PORT }}
           EOT
 
-                cp secrets.env .env
-                docker compose down
-                docker compose up --build -d
-              EOF
+            cp secrets.env .env
+            docker compose down
+            docker compose up --build -d
+          EOF
