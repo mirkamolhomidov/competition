@@ -6,24 +6,31 @@ services:
         - PORT
     command: sh -c "yarn start:prod"
     ports:
-      - '${PORT}:4000'
+      - '${PORT}:${PORT}'
     environment:
       - PORT=${PORT}
     depends_on:
       - postgres
-
+      - redis
   postgres:
-    image: postgres:15
-    container_name: postgres
+    container_name: postgres-db
+    image: postgres:latest
     restart: always
-    environment:
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
-      - '${DB_PORT}:5432'
+      - ${POSTGRES_PORT}:5432
+    env_file:
+      - .env
     volumes:
-      - pgdata1:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
 
+  redis:
+    image: redis:latest
+    command: ['redis-server']
+    healthcheck:
+      test: ['CMD-SHELL', 'redis-cli ping | grep PONG']
+      interval: 5s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
 volumes:
-  pgdata1:
+  pgdata:
