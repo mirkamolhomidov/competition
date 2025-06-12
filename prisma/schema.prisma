@@ -9,10 +9,9 @@ datasource db {
 
 model User {
   id           Int    @id @default(autoincrement())
-  username     String @unique
+  phone_number String @unique
   password     String
   email        String @unique
-  phone_number String @unique
 
   @@map("users")
 }
